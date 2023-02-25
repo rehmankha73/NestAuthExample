@@ -21,6 +21,10 @@ export class UsersService {
     },
   ];
 
+  async fetchAll() {
+    return this.users;
+  }
+
   async findOne(username: string){
     return this.users.find(user => user.username === username);
   }

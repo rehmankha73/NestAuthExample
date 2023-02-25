@@ -7,10 +7,23 @@ import { Public } from "./auth/decorators/setmetadata.decorator";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./common/schemas/users.schema";
 import { Model } from "mongoose";
+import { UsersService } from "./users/users.service";
+import { AppService } from "./app.service";
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService, @InjectModel(User.name) private readonly model: Model<UserDocument>) {}
+  constructor(
+    private authService: AuthService, @InjectModel(User.name) private readonly model: Model<UserDocument>,
+    private readonly userService: UsersService,
+    private readonly appService: AppService
+  ) {}
+
+
+  @Public()
+  @Get()
+  index() {
+    return this.appService.index()
+  }
 
   @Public()
   @UseGuards(LocalAuthGuard)
@@ -23,19 +36,11 @@ export class AppController {
 
   @Public()
   // @UseGuards(LocalAuthGuard)
-  @Get('user')
-  async create(@Query() data) {
-    console.log('Data', data)
-    return {
-      name: 'rehman ahmed khan'
-    }
-    // const user = this.model.create({
-    //
-    // });
-    // return req.user;
+  @Get('users')
+  async fetchAll(@Query() data) {
+    return this.appService.getAllUsers();
+    // return this.userService.fetchAll();
   }
-
-
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')

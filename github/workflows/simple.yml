@@ -1,0 +1,21 @@
+name: Shell Commends
+
+# on["push"]
+on:
+    - push
+
+
+jobs:
+  run-shell-command:
+    runs-on: ubuntu-latest
+    step:
+      - name: echo a string
+        run: echo "Hello World! this is workflow test"
+
+      - name: multiline script
+        run: |
+          node --version
+          npm --version
+
+
+
